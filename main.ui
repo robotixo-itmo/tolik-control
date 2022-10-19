@@ -14,7 +14,7 @@
    <string>tolik.exe</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="plus">
+   <widget class="QPushButton" name="plus_b">
     <property name="geometry">
      <rect>
       <x>580</x>
@@ -23,6 +23,9 @@
       <height>60</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>увеличивает количество циклов на 1</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
@@ -30,7 +33,7 @@
      <string>+</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="start">
+   <widget class="QPushButton" name="start_b">
     <property name="geometry">
      <rect>
       <x>289</x>
@@ -42,6 +45,9 @@
     <property name="focusPolicy">
      <enum>Qt::WheelFocus</enum>
     </property>
+    <property name="toolTip">
+     <string>запускает процесс создания</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
@@ -49,7 +55,7 @@
      <string>start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="minus">
+   <widget class="QPushButton" name="minus_b">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -58,6 +64,9 @@
       <height>60</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>уменьшает количество циклов на 1</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
@@ -65,7 +74,7 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="cycle">
+   <widget class="QLCDNumber" name="cycle_num">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -73,6 +82,9 @@
       <width>200</width>
       <height>180</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Количество циклов в программе</string>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
@@ -85,6 +97,126 @@
     </property>
     <property name="segmentStyle">
      <enum>QLCDNumber::Filled</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="minus_5_b">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>410</y>
+      <width>60</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>уменьшает количество циклов на 5</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 30px</string>
+    </property>
+    <property name="text">
+     <string>-5</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="plus_5_b">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>410</y>
+      <width>60</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>увеличивает количество циклов на 5</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 30px</string>
+    </property>
+    <property name="text">
+     <string>+5</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="done_lbl">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>25</y>
+      <width>280</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 20px</string>
+    </property>
+    <property name="text">
+     <string>Выполнено циклов: 1/99</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="remainder_lbl">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>70</y>
+      <width>280</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 20px</string>
+    </property>
+    <property name="text">
+     <string>Осталось:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="res_pas_b">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>410</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::WheelFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>временно не работает :(</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 30px</string>
+    </property>
+    <property name="text">
+     <string>pause</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cancel_b">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>410</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::WheelFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>временно не работает</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 30px</string>
+    </property>
+    <property name="text">
+     <string>cancel</string>
     </property>
    </widget>
   </widget>
