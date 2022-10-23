@@ -16,52 +16,57 @@ class MainWindow(QMainWindow):
         self.initUI()
         self.show()
 
-    def initUI(self):
+    def initUI(self):  # FIXME: change visibility
         for button in self.firstButtonsGroup:
             button.show()
 
         self.cycleNum.display(self.count)
-        self.remainderLabel.hide()
-        self.doneLabel.hide()
-        self.cancelButton.hide()
-        self.resumePauseButton.hide()
+        for element in self.remainderLabel, self.doneLabel, self.cancelButton, self.resumePauseButton:
+            element.hide()
 
         self._listenButtons()
         self.center()
 
-    def _listenButtons(self):
-        self.plusButton.clicked.connect(lambda s, x=1: self.displayValueChange(x))
-        self.minusButton.clicked.connect(lambda s, x=-1: self.displayValueChange(x))
-        self.plusFiveButton.clicked.connect(lambda s, x=5: self.displayValueChange(x))
-        self.minusFiveButton.clicked.connect(lambda s, x=-5: self.displayValueChange(x))
-        self.resumePauseButton.clicked.connect(self.pauseResume)
-        self.cancelButton.clicked.connect(self.cancel)
-        self.startButton.clicked.connect(self.start)
+    def _listenButtons(self):  # FIXME: change visibility
+        operation_buttons = {
+            1: self.plusButton,
+            5: self.plusFiveButton,
+            -1: self.minusButton,
+            -5: self.minusFiveButton
+        }
+        for i in operation_buttons.keys():
+            operation_buttons[i].clicked.connect(lambda s, x=i: self.displayValueChange(x))
 
-    def displayValueChange(self, arg):
+        action_buttons = {
+            self.resumePauseButton: self.pauseResume,
+            self.cancelButton: self.cancel,
+            self.startButton: self.start
+        }
+        for button, action in zip(action_buttons.keys(), action_buttons.values()):
+            button.clicked.connect(action)
+
+    def displayValueChange(self, arg):  # FIXME: change visibility
         self.count += arg
         if 0 > self.count or 99 < self.count:
             self.count = 0 if self.count < 0 else 99
         self.cycleNum.setDigitCount(int(len(str(self.count))))
         self.cycleNum.display(self.count)
 
-    def start(self):
+    def start(self):  # FIXME: change visibility
         for button in self.firstButtonsGroup:
             button.hide()
 
-        self.cancelButton.show()  # TODO: cycle
-        self.resumePauseButton.show()
-        self.remainderLabel.show()
-        self.doneLabel.show()
+        for element in self.cancelButton, self.resumePauseButton, self.remainderLabel, self.doneLabel:
+            element.show()
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
-    def pauseResume(self):
+    def pauseResume(self):  # FIXME: change visibility
         pass
 
-    def cancel(self):
+    def cancel(self):  # FIXME: change visibility
         pass
 
-    def center(self):
+    def center(self):  # FIXME: rename and change visibility
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
