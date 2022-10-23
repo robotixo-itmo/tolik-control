@@ -6,16 +6,17 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('src/windows/ui/main.ui', self)
+
+        self.count = 0
+        self.done = 0
+        self.buttons_group_1 = [self.plus_b, self.minus_b, self.plus_5_b, self.minus_5_b, self.start_b]
+
         self.initUI()
         self.show()
 
     def initUI(self):
-        self.buttons_group_1 = [self.plus_b, self.minus_b, self.plus_5_b, self.minus_5_b, self.start_b]
         for i in self.buttons_group_1:
             i.show()
-
-        self.count = 0
-        self.done = 0
 
         self.cycle_num.display(self.count)
         self.remainder_lbl.hide()
