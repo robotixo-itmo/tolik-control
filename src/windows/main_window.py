@@ -1,13 +1,11 @@
-import sys
-
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDesktopWidget, QWidget
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5 import uic
 
 
-class Main(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
+        uic.loadUi('src/windows/ui/main.ui', self)
         self.initUI()
         self.show()
 
@@ -65,25 +63,3 @@ class Main(QMainWindow):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-
-
-class Error(QWidget):
-    def __init__(self):
-        super().__init__()
-        #  uic.loadUi('main.ui', self)
-        self.initUI()
-        self.show()
-
-    def initUI(self):
-        pass
-
-
-def excepthook(cls, traceback, exception):
-    sys.excepthook(cls, traceback, exception)
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    mn = Main()
-    sys.excepthook = excepthook
-    sys.exit(app.exec_())
