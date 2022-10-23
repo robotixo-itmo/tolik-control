@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>tolik.exe</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="plus_b">
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="plusButton">
     <property name="geometry">
      <rect>
       <x>580</x>
@@ -33,7 +33,7 @@
      <string>+</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="start_b">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
       <x>289</x>
@@ -55,7 +55,7 @@
      <string>start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="minus_b">
+   <widget class="QPushButton" name="minusButton">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -74,7 +74,7 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="cycle_num">
+   <widget class="QLCDNumber" name="cycleNum">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -99,7 +99,7 @@
      <enum>QLCDNumber::Filled</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="minus_5_b">
+   <widget class="QPushButton" name="minusFiveButton">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -118,7 +118,7 @@
      <string>-5</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="plus_5_b">
+   <widget class="QPushButton" name="plusFiveButton">
     <property name="geometry">
      <rect>
       <x>650</x>
@@ -137,7 +137,7 @@
      <string>+5</string>
     </property>
    </widget>
-   <widget class="QLabel" name="done_lbl">
+   <widget class="QLabel" name="doneLabel">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -156,7 +156,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="remainder_lbl">
+   <widget class="QLabel" name="remainderLabel">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -175,7 +175,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="res_pas_b">
+   <widget class="QPushButton" name="resumePauseButton">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -197,7 +197,7 @@
      <string>pause</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="cancel_b">
+   <widget class="QPushButton" name="cancelButton">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -220,7 +220,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <resources/>
  <connections/>

@@ -9,51 +9,53 @@ class MainWindow(QMainWindow):
 
         self.count = 0
         self.done = 0
-        self.buttons_group_1 = [self.plus_b, self.minus_b, self.plus_5_b, self.minus_5_b, self.start_b]
+        self.firstButtonsGroup = [
+            self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton
+        ]
 
         self.initUI()
         self.show()
 
     def initUI(self):
-        for i in self.buttons_group_1:
-            i.show()
+        for button in self.firstButtonsGroup:
+            button.show()
 
-        self.cycle_num.display(self.count)
-        self.remainder_lbl.hide()
-        self.done_lbl.hide()
-        self.cancel_b.hide()
-        self.res_pas_b.hide()
+        self.cycleNum.display(self.count)
+        self.remainderLabel.hide()
+        self.doneLabel.hide()
+        self.cancelButton.hide()
+        self.resumePauseButton.hide()
 
-        self._listen_buttons()
+        self._listenButtons()
         self.center()
 
-    def _listen_buttons(self):
-        self.plus_b.clicked.connect(lambda s, x=1: self.display_value_change(x))
-        self.minus_b.clicked.connect(lambda s, x=-1: self.display_value_change(x))
-        self.plus_5_b.clicked.connect(lambda s, x=5: self.display_value_change(x))
-        self.minus_5_b.clicked.connect(lambda s, x=-5: self.display_value_change(x))
-        self.res_pas_b.clicked.connect(self.pause_resume)
-        self.cancel_b.clicked.connect(self.cancel)
-        self.start_b.clicked.connect(self.start)
+    def _listenButtons(self):
+        self.plusButton.clicked.connect(lambda s, x=1: self.displayValueChange(x))
+        self.minusButton.clicked.connect(lambda s, x=-1: self.displayValueChange(x))
+        self.plusFiveButton.clicked.connect(lambda s, x=5: self.displayValueChange(x))
+        self.minusFiveButton.clicked.connect(lambda s, x=-5: self.displayValueChange(x))
+        self.resumePauseButton.clicked.connect(self.pauseResume)
+        self.cancelButton.clicked.connect(self.cancel)
+        self.startButton.clicked.connect(self.start)
 
-    def display_value_change(self, arg):
+    def displayValueChange(self, arg):
         self.count += arg
         if 0 > self.count or 99 < self.count:
             self.count = 0 if self.count < 0 else 99
-        self.cycle_num.setDigitCount(int(len(str(self.count))))
-        self.cycle_num.display(self.count)
+        self.cycleNum.setDigitCount(int(len(str(self.count))))
+        self.cycleNum.display(self.count)
 
     def start(self):
-        for i in self.buttons_group_1:
-            i.hide()
+        for button in self.firstButtonsGroup:
+            button.hide()
 
-        self.cancel_b.show()
-        self.res_pas_b.show()
-        self.remainder_lbl.show()
-        self.done_lbl.show()
-        self.done_lbl.setText(f'Выполнено циклов: {self.done}/{self.count}')
+        self.cancelButton.show()  # TODO: cycle
+        self.resumePauseButton.show()
+        self.remainderLabel.show()
+        self.doneLabel.show()
+        self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
-    def pause_resume(self):
+    def pauseResume(self):
         pass
 
     def cancel(self):
