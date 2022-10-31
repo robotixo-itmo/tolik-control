@@ -66,7 +66,10 @@ class MainWindow(QMainWindow):
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
     def __pauseResume(self):
-        pass
+        if self.resumePauseButton.text() == "pause":
+            self.resumePauseButton.setText("resume")  # TODO: add action (send message to board, ..., ...)
+        else:
+            self.resumePauseButton.setText("pause")
 
     def __cancel(self):
         self.dialog = CancelDialog()
