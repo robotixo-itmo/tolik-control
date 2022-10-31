@@ -9,15 +9,18 @@ class MainWindow(QMainWindow):
 
         self.count = 0
         self.done = 0
-        self.firstButtonsGroup = [
+        self.buttonsGroup = [
             self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton
+        ]
+        self.elementsGroup = [
+            self.cancelButton, self.resumePauseButton, self.remainderLabel, self.doneLabel
         ]
 
         self.__initUI()
         self.show()
 
     def __initUI(self):
-        for button in self.firstButtonsGroup:
+        for button in self.buttonsGroup:
             button.show()
 
         self.cycleNum.display(self.count)
@@ -53,10 +56,10 @@ class MainWindow(QMainWindow):
         self.cycleNum.display(self.count)
 
     def __start(self):
-        for button in self.firstButtonsGroup:
+        for button in self.buttonsGroup:
             button.hide()
 
-        for element in self.cancelButton, self.resumePauseButton, self.remainderLabel, self.doneLabel:
+        for element in self.elementsGroup:
             element.show()
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
@@ -64,7 +67,11 @@ class MainWindow(QMainWindow):
         pass
 
     def __cancel(self):
-        pass
+        for element in self.elementsGroup:
+            element.hide()
+
+        for button in self.buttonsGroup:
+            button.show()
 
     def __center(self):  # FIXME: rename
         qr = self.frameGeometry()
