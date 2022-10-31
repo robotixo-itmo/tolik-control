@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5 import uic
 
+from windows.cancel_dialog import CancelDialog
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -67,6 +69,12 @@ class MainWindow(QMainWindow):
         pass
 
     def __cancel(self):
+        self.dialog = CancelDialog()
+        self.dialog.accepted.connect(self.__backToMainWindow)
+        self.dialog.exec()
+
+    def __backToMainWindow(self):
+        self.dialog.accept()
         for element in self.elementsGroup:
             element.hide()
 
