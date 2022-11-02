@@ -1,3 +1,4 @@
+from serial.tools import list_ports
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5 import uic
 
@@ -10,6 +11,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         uic.loadUi('src/windows/ui/main.ui', self)
 
+        self.port = ""
+
         self.count = 0
         self.done = 0
         self.buttonsGroup = [
@@ -20,15 +23,18 @@ class MainWindow(QMainWindow):
         ]
 
         self.__initUI()
-        self.show()
 
     def __initUI(self):
+        self.setFixedSize(800, 550)
         for button in self.buttonsGroup:
             button.show()
 
         self.cycleNum.display(self.count)
         for element in self.remainderLabel, self.doneLabel, self.cancelButton, self.resumePauseButton:
             element.hide()
+
+        self.updatePortList()
+        self.comboBox.show()
 
         self.__listenButtons()
         self.__center()
@@ -42,6 +48,8 @@ class MainWindow(QMainWindow):
         }
         for i in operation_buttons.keys():
             operation_buttons[i].clicked.connect(lambda s, x=i: self.__displayValueChange(x))
+        self.comboBox.textHighlighted.connect(self.updatePortList)
+        self.comboBox.textActivated.connect(self.updatePortList)
 
         action_buttons = {
             self.resumePauseButton: self.__pauseResume,
@@ -51,6 +59,11 @@ class MainWindow(QMainWindow):
         for button, action in zip(action_buttons.keys(), action_buttons.values()):
             button.clicked.connect(action)
 
+    def updatePortList(self):
+        self.comboBox.clear()
+        for port in list_ports.comports():
+            self.comboBox.addItem(port.name)
+
     def __displayValueChange(self, arg):
         self.count += arg
         if 0 > self.count or 99 < self.count:
@@ -59,11 +72,13 @@ class MainWindow(QMainWindow):
         self.cycleNum.display(self.count)
 
     def __start(self):
-        self.worker = WorkerThread()
+        self.worker = WorkerThread(self.comboBox.currentText())
         self.worker.messageReceived.connect(self.__processBoardOutput)
 
         for button in self.buttonsGroup:
             button.hide()
+        self.comboBox.hide()
+        self.portLabel.hide()
 
         for element in self.elementsGroup:
             element.show()
@@ -90,6 +105,8 @@ class MainWindow(QMainWindow):
 
         for button in self.buttonsGroup:
             button.show()
+        self.comboBox.show()
+        self.portLabel.show()
 
     def __center(self):  # FIXME: rename
         qr = self.frameGeometry()
