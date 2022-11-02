@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5 import uic
 
 from windows.cancel_dialog import CancelDialog
+from utils.worker_thread import WorkerThread
 
 
 class MainWindow(QMainWindow):
@@ -58,12 +59,18 @@ class MainWindow(QMainWindow):
         self.cycleNum.display(self.count)
 
     def __start(self):
+        self.worker = WorkerThread()
+        self.worker.messageReceived.connect(self.__processBoardOutput)
+
         for button in self.buttonsGroup:
             button.hide()
 
         for element in self.elementsGroup:
             element.show()
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
+
+    def __processBoardOutput(self, text: str):
+        pass
 
     def __pauseResume(self):
         if self.resumePauseButton.text() == "pause":
