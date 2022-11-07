@@ -1,9 +1,11 @@
 from serial.tools import list_ports
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QComboBox
 from PyQt5 import uic
 
 from windows.cancel_dialog import CancelDialog
 from windows.serial_connection_error_dialog import SerialConnectionErrorDialog
+from utils.port_listener import PortListener
 from utils.worker_thread import WorkerThread
 
 
@@ -35,7 +37,8 @@ class MainWindow(QMainWindow):
             element.hide()
 
         self.updatePortList()
-        self.comboBox.show()
+        self.portListener = PortListener()
+        self.portListener.update.connect(self.updatePortList)
 
         self.__listenButtons()
         self.__center()
@@ -49,8 +52,6 @@ class MainWindow(QMainWindow):
         }
         for i in operation_buttons.keys():
             operation_buttons[i].clicked.connect(lambda s, x=i: self.__displayValueChange(x))
-        self.comboBox.textHighlighted.connect(self.updatePortList)
-        self.comboBox.textActivated.connect(self.updatePortList)
 
         action_buttons = {
             self.resumePauseButton: self.__pauseResume,
@@ -80,6 +81,8 @@ class MainWindow(QMainWindow):
         self.worker = WorkerThread(self.comboBox.currentText())
         self.worker.messageReceived.connect(self.__processBoardOutput)
 
+        self.portListener.exit()
+
         for button in self.buttonsGroup:
             button.hide()
         self.comboBox.hide()
@@ -106,6 +109,7 @@ class MainWindow(QMainWindow):
     def __backToMainWindow(self):
         self.dialog.accept()
         self.worker.exit()
+        self.portListener.exiting = False
         for element in self.elementsGroup:
             element.hide()
 
