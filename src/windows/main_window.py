@@ -3,13 +3,14 @@ from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5 import uic
 
 from windows.cancel_dialog import CancelDialog
+from windows.serial_connection_error_dialog import SerialConnectionErrorDialog
 from utils.worker_thread import WorkerThread
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('src/windows/ui/main.ui', self)
+        uic.loadUi('windows/ui/main.ui', self)
 
         self.port = ""
 
@@ -72,6 +73,10 @@ class MainWindow(QMainWindow):
         self.cycleNum.display(self.count)
 
     def __start(self):
+        if self.comboBox.currentText() == '':
+            SerialConnectionErrorDialog().exec()
+            return
+
         self.worker = WorkerThread(self.comboBox.currentText())
         self.worker.messageReceived.connect(self.__processBoardOutput)
 
@@ -100,6 +105,7 @@ class MainWindow(QMainWindow):
 
     def __backToMainWindow(self):
         self.dialog.accept()
+        self.worker.exit()
         for element in self.elementsGroup:
             element.hide()
 
