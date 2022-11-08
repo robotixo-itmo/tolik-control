@@ -1,6 +1,5 @@
 from serial.tools import list_ports
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QMessageBox
 from PyQt5 import uic
 
 from windows.cancel_dialog import CancelDialog
@@ -74,6 +73,13 @@ class MainWindow(QMainWindow):
         self.cycleNum.display(self.count)
 
     def __start(self):
+        if self.cycleNum.intValue() == 0:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Ошибка")
+            dlg.setText("Количество циклов не задано.")
+            dlg.exec()
+            return
+
         if self.comboBox.currentText() == '':
             SerialConnectionErrorDialog().exec()
             return
@@ -93,7 +99,8 @@ class MainWindow(QMainWindow):
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
     def __processBoardOutput(self, text: str):
-        pass
+        if text == 'done':
+            self.__displayValueChange(-1)
 
     def __pauseResume(self):
         if self.resumePauseButton.text() == "pause":
