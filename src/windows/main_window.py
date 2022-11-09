@@ -117,6 +117,7 @@ class MainWindow(QMainWindow):
         self.dialog.accept()
         self.worker.exit()
         self.portListener.exiting = False
+        self.portListener.start( )
         for element in self.elementsGroup:
             element.hide()
 
