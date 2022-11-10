@@ -2,10 +2,10 @@ from serial.tools import list_ports
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QMessageBox
 from PyQt5 import uic
 
-from windows.cancel_dialog import CancelDialog
-from windows.serial_connection_error_dialog import SerialConnectionErrorDialog
-from utils.port_listener import PortListener
-from utils.worker_thread import WorkerThread
+from src.windows.cancel_dialog import CancelDialog
+from src.windows.serial_connection_error_dialog import SerialConnectionErrorDialog
+from src.utils.port_listener import PortListener
+from src.utils.worker_thread import WorkerThread
 
 
 class MainWindow(QMainWindow):
@@ -17,22 +17,19 @@ class MainWindow(QMainWindow):
 
         self.count = 0
         self.done = 0
-        self.buttonsGroup = [
-            self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton
-        ]
+
         self.elementsGroup = [
-            self.cancelButton, self.resumePauseButton, self.remainderLabel, self.doneLabel
+            self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton,
+            self.comboBox, self.portLabel,
+            self.cancelButton, self.resumePauseButton, self.remainderLabel,
+            self.doneLabel, self.progressBar
         ]
 
         self.__initUI()
 
     def __initUI(self):
-        self.setFixedSize(800, 550)
-        for button in self.buttonsGroup:
-            button.show()
-
         self.cycleNum.display(self.count)
-        for element in self.remainderLabel, self.doneLabel, self.cancelButton, self.resumePauseButton:
+        for element in self.elementsGroup[self.elementsGroup.index(self.cancelButton):]:
             element.hide()
 
         self.updatePortList()
@@ -57,7 +54,7 @@ class MainWindow(QMainWindow):
             self.cancelButton: self.__cancel,
             self.startButton: self.__start
         }
-        for button, action in zip(action_buttons.keys(), action_buttons.values()):
+        for button, action in action_buttons.items():
             button.clicked.connect(action)
 
     def updatePortList(self):
@@ -89,13 +86,8 @@ class MainWindow(QMainWindow):
 
         self.portListener.exit()
 
-        for button in self.buttonsGroup:
-            button.hide()
-        self.comboBox.hide()
-        self.portLabel.hide()
-
         for element in self.elementsGroup:
-            element.show()
+            element.setVisible(not element.isVisible())
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
     def __processBoardOutput(self, text: str):
@@ -117,14 +109,9 @@ class MainWindow(QMainWindow):
         self.dialog.accept()
         self.worker.exit()
         self.portListener.exiting = False
-        self.portListener.start( )
+        self.portListener.start()
         for element in self.elementsGroup:
-            element.hide()
-
-        for button in self.buttonsGroup:
-            button.show()
-        self.comboBox.show()
-        self.portLabel.show()
+            element.setVisible(not element.isVisible())
 
     def __center(self):  # FIXME: rename
         qr = self.frameGeometry()
