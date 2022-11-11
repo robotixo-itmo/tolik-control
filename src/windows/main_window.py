@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         for element in self.elementsGroup[self.elementsGroup.index(self.cancelButton):]:
             element.hide()
 
+        self.progressBar.setValue(0)
         self.updatePortList()
         self.portListener = PortListener()
         self.portListener.update.connect(self.updatePortList)
@@ -67,7 +68,7 @@ class MainWindow(QMainWindow):
         if 0 > self.count or 99 < self.count:
             self.count = 0 if self.count < 0 else 99
         self.cycleNum.setDigitCount(int(len(str(self.count))))
-        self.cycleNum.display(self.count)
+        self.cycleNum.display(self.count - self.done)
 
     def __start(self):
         if self.cycleNum.intValue() == 0:
@@ -88,11 +89,20 @@ class MainWindow(QMainWindow):
 
         for element in self.elementsGroup:
             element.setVisible(not element.isVisible())
+        self.progressBar.setValue(round(self.done / self.count * 100))
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
     def __processBoardOutput(self, text: str):
         if text == 'done':
-            self.__displayValueChange(-1)
+            self.__displayValueChange(0)
+            self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
+            self.progressBar.setValue(round(self.done / self.count * 100))
+            if self.done == self.count:
+                self.__backToMainWindow()
+                self.done, self.count = 0, 0
+                self.cycleNum.display(self.count)
+            else:
+                self.done += 1
 
     def __pauseResume(self):
         if self.resumePauseButton.text() == "pause":
