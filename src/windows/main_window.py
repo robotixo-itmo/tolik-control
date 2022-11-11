@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
         if text == 'done':
             self.__displayValueChange(0)
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
-            self.progressBar.setValue(round(self.done / self.count * 100))
+            self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
             if self.done == self.count:
                 self.__dialog('Конец', 'Работа завершена')
                 self.__backToMainWindow()
