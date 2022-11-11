@@ -99,8 +99,6 @@ class MainWindow(QMainWindow):
             self.progressBar.setValue(round(self.done / self.count * 100))
             if self.done == self.count:
                 self.__backToMainWindow()
-                self.done, self.count = 0, 0
-                self.cycleNum.display(self.count)
             else:
                 self.done += 1
 
@@ -116,6 +114,8 @@ class MainWindow(QMainWindow):
         self.dialog.exec()
 
     def __backToMainWindow(self):
+        self.done, self.count = 0, 0
+        self.__displayValueChange(-self.count)
         self.dialog.accept()
         self.worker.exit()
         self.portListener.exiting = False
