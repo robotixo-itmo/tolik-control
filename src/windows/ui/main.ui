@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>увеличивает количество циклов на 1</string>
+     <string>Увеличивает количество циклов на 1</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
@@ -58,10 +58,10 @@
      <enum>Qt::WheelFocus</enum>
     </property>
     <property name="toolTip">
-     <string>запускает процесс создания</string>
+     <string>Запускает процесс создания</string>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-size: 30px</string>
+     <string notr="true">font-size: 30px;</string>
     </property>
     <property name="text">
      <string>start</string>
@@ -77,7 +77,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>уменьшает количество циклов на 1</string>
+     <string>Уменьшает количество циклов на 1</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
@@ -121,7 +121,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>уменьшает количество циклов на 5</string>
+     <string>Уменьшает количество циклов на 5</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
@@ -140,7 +140,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>увеличивает количество циклов на 5</string>
+     <string>Увеличивает количество циклов на 5</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
@@ -200,7 +200,7 @@
      <enum>Qt::WheelFocus</enum>
     </property>
     <property name="toolTip">
-     <string>временно не работает :(</string>
+     <string>Временно не работает :(</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
@@ -222,7 +222,7 @@
      <enum>Qt::WheelFocus</enum>
     </property>
     <property name="toolTip">
-     <string>временно не работает</string>
+     <string>Отмена процесса</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
@@ -239,6 +239,9 @@
       <width>110</width>
       <height>35</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Подключенное устройство</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 13px</string>
@@ -278,7 +281,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>прогресс работы</string>
+     <string>Прогресс работы</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 18px;

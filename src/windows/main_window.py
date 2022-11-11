@@ -28,6 +28,7 @@ class MainWindow(QMainWindow):
         self.__initUI()
 
     def __initUI(self):
+        self.setStyleSheet("QToolTip{color: black; font-size: 20px}")
         self.cycleNum.display(self.count)
         for element in self.elementsGroup[self.elementsGroup.index(self.cancelButton):]:
             element.hide()
