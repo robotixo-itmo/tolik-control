@@ -1,6 +1,6 @@
 from serial.tools import list_ports
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QMessageBox
-from PyQt5 import uic
+from PyQt5 import uic, QtCore
 
 from src.windows.cancel_dialog import CancelDialog
 from src.windows.serial_connection_error_dialog import SerialConnectionErrorDialog
@@ -61,8 +61,12 @@ class MainWindow(QMainWindow):
 
     def updatePortList(self):
         self.comboBox.clear()
+        self.comboBox.setEditable(True)
         for port in list_ports.comports():
             self.comboBox.addItem(port.name)
+        self.comboBox.lineEdit().setAlignment(QtCore.Qt.AlignCenter)
+        self.comboBox.lineEdit().setReadOnly(True)
+        self.comboBox.setStyleSheet('font-size: 20px; background-color: #e2e2e2')
 
     def __displayValueChange(self, arg):
         self.count += arg
