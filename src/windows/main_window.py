@@ -70,12 +70,15 @@ class MainWindow(QMainWindow):
         self.cycleNum.setDigitCount(int(len(str(self.count))))
         self.cycleNum.display(self.count - self.done)
 
+    def __dialog(self, title, message):
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle(title)
+        dlg.setText(message)
+        dlg.exec()
+
     def __start(self):
         if self.cycleNum.intValue() == 0:
-            dlg = QMessageBox(self)
-            dlg.setWindowTitle("Ошибка")
-            dlg.setText("Количество циклов не задано.")
-            dlg.exec()
+            self.__dialog('Ошибка', 'Количество циклов не задано')
             return
 
         if self.comboBox.currentText() == '':
@@ -98,6 +101,7 @@ class MainWindow(QMainWindow):
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(round(self.done / self.count * 100))
             if self.done == self.count:
+                self.__dialog('Конец', 'Работа завершена')
                 self.__backToMainWindow()
             else:
                 self.done += 1
@@ -116,7 +120,7 @@ class MainWindow(QMainWindow):
     def __backToMainWindow(self):
         self.done, self.count = 0, 0
         self.__displayValueChange(-self.count)
-        self.dialog.accept()
+        self.dialog.accept() if self.dialog else 0
         self.worker.exit()
         self.portListener.exiting = False
         self.portListener.start()
