@@ -11,15 +11,13 @@ class WorkerThread(QThread):
     def __init__(self, port: str, parent=None):
         self.port = port
         QThread.__init__(self, parent)
-        try:
+        if self.check_port():
             if platform.system() == 'Windows':
                 self.serialDevice = Serial(f"{self.port}")
             elif platform.system() == 'Linux':
                 self.serialDevice = Serial(f"/dev/{self.port}")
-        except SerialException:
-            pass
-        self.exiting = False
-        self.start()
+            self.exiting = False
+            self.start()
 
     def check_port(self):
         try:
@@ -29,6 +27,7 @@ class WorkerThread(QThread):
                 self.serialDevice = Serial(f"/dev/{self.port}")
         except SerialException:
             return False
+        self.serialDevice.close()
         return True
 
     def run(self):
