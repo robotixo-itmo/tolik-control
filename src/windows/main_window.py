@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QMessageBox
 from PyQt5 import uic, QtCore
 
 from src.windows.cancel_dialog import CancelDialog
-from src.windows.serial_connection_error_dialog import SerialConnectionErrorDialog
 from src.utils.port_listener import PortListener
 from src.utils.worker_thread import WorkerThread
 
@@ -87,7 +86,7 @@ class MainWindow(QMainWindow):
             return
 
         if self.comboBox.currentText() == '':
-            SerialConnectionErrorDialog().exec()
+            self.__dialog('Ошибка подключения', 'Устройство не найдено. Переподключите и повторите попытку.')
             return
 
         self.worker = WorkerThread(self.comboBox.currentText())
