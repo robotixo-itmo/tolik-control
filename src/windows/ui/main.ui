@@ -36,13 +36,16 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Увеличивает количество циклов на 1</string>
+     <string>Увеличивает количество циклов на 1 (Up)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
     <property name="text">
      <string>+</string>
+    </property>
+    <property name="shortcut">
+     <string>Up</string>
     </property>
    </widget>
    <widget class="QPushButton" name="startButton">
@@ -58,13 +61,16 @@
      <enum>Qt::WheelFocus</enum>
     </property>
     <property name="toolTip">
-     <string>Запускает процесс создания</string>
+     <string>Запускает процесс создания (Enter)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px;</string>
     </property>
     <property name="text">
      <string>start</string>
+    </property>
+    <property name="shortcut">
+     <string>Return</string>
     </property>
    </widget>
    <widget class="QPushButton" name="minusButton">
@@ -77,13 +83,16 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Уменьшает количество циклов на 1</string>
+     <string>Уменьшает количество циклов на 1 (Down)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
     <property name="text">
      <string>-</string>
+    </property>
+    <property name="shortcut">
+     <string>Down</string>
     </property>
    </widget>
    <widget class="QLCDNumber" name="cycleNum">
@@ -117,17 +126,20 @@
       <x>90</x>
       <y>410</y>
       <width>60</width>
-      <height>60</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="toolTip">
-     <string>Уменьшает количество циклов на 5</string>
+     <string>Уменьшает количество циклов на 5 (Shift + Down)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
     <property name="text">
      <string>-5</string>
+    </property>
+    <property name="shortcut">
+     <string>Shift+Down</string>
     </property>
    </widget>
    <widget class="QPushButton" name="plusFiveButton">
@@ -140,13 +152,16 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Увеличивает количество циклов на 5</string>
+     <string>Увеличивает количество циклов на 5 (Shift + Up)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
     <property name="text">
      <string>+5</string>
+    </property>
+    <property name="shortcut">
+     <string>Shift+Up</string>
     </property>
    </widget>
    <widget class="QLabel" name="doneLabel">
@@ -200,13 +215,16 @@
      <enum>Qt::WheelFocus</enum>
     </property>
     <property name="toolTip">
-     <string>Временно не работает :(</string>
+     <string>Временно не работает :( (Space)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
     <property name="text">
      <string>pause</string>
+    </property>
+    <property name="shortcut">
+     <string>Space</string>
     </property>
    </widget>
    <widget class="QPushButton" name="cancelButton">
@@ -222,13 +240,16 @@
      <enum>Qt::WheelFocus</enum>
     </property>
     <property name="toolTip">
-     <string>Отмена процесса</string>
+     <string>Отмена процесса (Escape)</string>
     </property>
     <property name="styleSheet">
      <string notr="true">font-size: 30px</string>
     </property>
     <property name="text">
      <string>cancel</string>
+    </property>
+    <property name="shortcut">
+     <string>Esc</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboBox">
