@@ -1,4 +1,5 @@
 from time import sleep
+import platform
 
 from PyQt5.QtCore import QThread, pyqtSignal
 from serial import Serial, SerialException
@@ -11,18 +12,21 @@ class WorkerThread(QThread):
         self.port = port
         QThread.__init__(self, parent)
         try:
-            self.serialDevice = Serial(f"/dev/{self.port}")
+            if platform.system() == 'Windows':
+                self.serialDevice = Serial(f"{self.port}")
+            elif platform.system() == 'Linux':
+                self.serialDevice = Serial(f"/dev/{self.port}")
         except SerialException:
-            self.serialDevice = Serial(f"{self.port}")
+            pass
         self.exiting = False
         self.start()
 
     def check_port(self):
         try:
-            try:
-                self.serialDevice = Serial(f"/dev/{self.port}")
-            except SerialException:
+            if platform.system() == 'Windows':
                 self.serialDevice = Serial(f"{self.port}")
+            elif platform.system() == 'Linux':
+                self.serialDevice = Serial(f"/dev/{self.port}")
         except SerialException:
             return False
         return True

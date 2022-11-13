@@ -120,6 +120,7 @@ class MainWindow(QMainWindow):
         self.dialog = CancelDialog()
         self.dialog.accepted.connect(self.__backToMainWindow)
         self.dialog.exec()
+        self.worker.serialDevice.close()
 
     def __backToMainWindow(self):
         self.done, self.count = 0, 0
