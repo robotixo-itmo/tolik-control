@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
 
         self.count = 0
         self.done = 0
+        self.currentDisplay = "start"
 
         self.elementsGroup = [
             self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton,
@@ -79,11 +80,12 @@ class MainWindow(QMainWindow):
         dlg = QMessageBox(self)
         dlg.setWindowTitle(title)
         dlg.setText(message)
-        dlg.exec()
+        return dlg
 
     def __start(self):
         if self.cycleNum.intValue() == 0:
-            self.__dialog('Ошибка', 'Количество циклов не задано')
+            self.dialog = self.__dialog('Ошибка', 'Количество циклов не задано')
+            self.dialog.exec()
             return
 
         if self.comboBox.currentText() == '':
@@ -99,14 +101,17 @@ class MainWindow(QMainWindow):
             element.setVisible(not element.isVisible())
         self.progressBar.setValue(round(self.done / self.count * 100))
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
+        self.currentDisplay = "work"
 
     def __processBoardOutput(self, text: str):
-        if text == 'done':
+        if text == 'done' and self.currentDisplay == "work":
             self.__displayValueChange(0)
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
             if self.done == self.count:
-                self.__dialog('Конец', 'Работа завершена')
+                self.dialog = self.__dialog('Конец', 'Работа завершена')
+                self.currentDisplay = "start"
+                self.dialog.exec()
                 self.__backToMainWindow()
             else:
                 self.done += 1
