@@ -14,6 +14,7 @@ class MainWindow(QMainWindow):
 
         self.port = ""
         self.dialog = ''
+        self.currentDisplay = "start"
 
         self.count = 0
         self.done = 0
@@ -79,15 +80,18 @@ class MainWindow(QMainWindow):
         dlg = QMessageBox(self)
         dlg.setWindowTitle(title)
         dlg.setText(message)
-        dlg.exec()
+        return dlg
 
     def __start(self):
         if self.cycleNum.intValue() == 0:
-            self.__dialog('Ошибка', 'Количество циклов не задано')
+            self.dialog = self.__dialog('Ошибка', 'Количество циклов не задано')
+            self.dialog.exec()
             return
 
         if self.comboBox.currentText() == '':
-            self.__dialog('Ошибка подключения', 'Устройство не найдено. Переподключите и повторите попытку.')
+            self.dialog = self.__dialog('Ошибка подключения',
+                                        'Устройство не найдено. Переподключите и повторите попытку.')
+            self.dialog.exec()
             return
 
         self.worker = WorkerThread(self.comboBox.currentText())
@@ -99,27 +103,25 @@ class MainWindow(QMainWindow):
             element.setVisible(not element.isVisible())
         self.progressBar.setValue(round(self.done / self.count * 100))
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
+        self.currentDisplay = "work"
 
     def __processBoardOutput(self, text: str):
-        answers = ['done', 'disconnect']
-        if text in answers:
+        if text == 'done' and self.currentDisplay == "work":
             self.__displayValueChange(0)
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
-            if text == answers[0]:
-                if self.count <= self.done:
-                    self.__dialog('Конец', 'Работа завершена')
-                    self.__backToMainWindow()
-                else:
-                    self.done += 1
-            else:
-                self.__dialog('Ошибка', 'Плата была отключена')
-                self.__backToMainWindow()
-        else:
-            self.done += 1
-            if self.count == self.done:
+            if self.count <= self.done:
                 self.__dialog('Конец', 'Работа завершена')
+                self.currentDisplay = "start"
+                self.dialog.exec()
                 self.__backToMainWindow()
+            else:
+                self.done += 1
+        elif text == 'disconnect':
+            self.dialog = self.__dialog('Ошибка', 'Плата была отключена')
+            self.currentDisplay = "start"
+            self.dialog.exec()
+            self.__backToMainWindow()
 
     def __pauseResume(self):
         if self.resumePauseButton.text() == "pause":
