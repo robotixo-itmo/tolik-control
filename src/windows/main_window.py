@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
         uic.loadUi('windows/ui/main.ui', self)
 
         self.port = ""
+        self.dialog = ''
 
         self.count = 0
         self.done = 0
@@ -100,15 +101,25 @@ class MainWindow(QMainWindow):
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
 
     def __processBoardOutput(self, text: str):
-        if text == 'done':
+        answers = ['done', 'disconnect']
+        if text in answers:
             self.__displayValueChange(0)
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
-            if self.done == self.count:
+            if text == answers[0]:
+                if self.count <= self.done:
+                    self.__dialog('Конец', 'Работа завершена')
+                    self.__backToMainWindow()
+                else:
+                    self.done += 1
+            else:
+                self.__dialog('Ошибка', 'Плата была отключена')
+                self.__backToMainWindow()
+        else:
+            self.done += 1
+            if self.count == self.done:
                 self.__dialog('Конец', 'Работа завершена')
                 self.__backToMainWindow()
-            else:
-                self.done += 1
 
     def __pauseResume(self):
         if self.resumePauseButton.text() == "pause":
@@ -120,7 +131,6 @@ class MainWindow(QMainWindow):
         self.dialog = CancelDialog()
         self.dialog.accepted.connect(self.__backToMainWindow)
         self.dialog.exec()
-        self.worker.serialDevice.close()
 
     def __backToMainWindow(self):
         self.done, self.count = 0, 0
