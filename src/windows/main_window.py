@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QMessageBox
 from PyQt5 import uic, QtCore
 
 from src.windows.cancel_dialog import CancelDialog
-from src.windows.serial_connection_error_dialog import SerialConnectionErrorDialog
 from src.utils.port_listener import PortListener
 from src.utils.worker_thread import WorkerThread
 
@@ -14,6 +13,8 @@ class MainWindow(QMainWindow):
         uic.loadUi('windows/ui/main.ui', self)
 
         self.port = ""
+        self.dialog = ''
+        self.currentDisplay = "start"
 
         self.count = 0
         self.done = 0
@@ -89,7 +90,9 @@ class MainWindow(QMainWindow):
             return
 
         if self.comboBox.currentText() == '':
-            SerialConnectionErrorDialog().exec()
+            self.dialog = self.__dialog('Ошибка подключения',
+                                        'Устройство не найдено. Переподключите и повторите попытку.')
+            self.dialog.exec()
             return
 
         self.worker = WorkerThread(self.comboBox.currentText())
@@ -108,15 +111,21 @@ class MainWindow(QMainWindow):
             self.__displayValueChange(0)
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
-            if self.done == self.count:
+            if self.count <= self.done:
                 self.dialog = self.__dialog('Конец', 'Работа завершена')
                 self.currentDisplay = "start"
                 self.dialog.exec()
                 self.__backToMainWindow()
             else:
                 self.done += 1
+        elif text == 'disconnect':
+            self.dialog = self.__dialog('Ошибка', 'Плата была отключена')
+            self.currentDisplay = "start"
+            self.dialog.exec()
+            self.__backToMainWindow()
 
     def __pauseResume(self):
+        self.worker.serialDevice.write(bytes(self.resumePauseButton.text(), 'ascii'))
         if self.resumePauseButton.text() == "pause":
             self.resumePauseButton.setText("resume")  # TODO: add action (send message to board, ..., ...)
         else:
