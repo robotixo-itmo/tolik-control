@@ -18,6 +18,7 @@ class MainWindow(QMainWindow):
 
         self.count = 0
         self.done = 0
+        self.currentDisplay = "start"
 
         self.elementsGroup = [
             self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton,
@@ -111,7 +112,7 @@ class MainWindow(QMainWindow):
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
             if self.count <= self.done:
-                self.__dialog('Конец', 'Работа завершена')
+                self.dialog = self.__dialog('Конец', 'Работа завершена')
                 self.currentDisplay = "start"
                 self.dialog.exec()
                 self.__backToMainWindow()
