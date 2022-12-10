@@ -127,9 +127,10 @@ class MainWindow(QMainWindow):
             self.__backToMainWindow()
 
     def __pauseResume(self):
-        #  self.worker.serialDevice.write(bytes(self.resumePauseButton.text(), 'ascii'))
-        if self.resumePauseButton.text() == "pause":
-            self.resumePauseButton.setText("resume")  # TODO: add action (send message to board, ..., ...)
+        command = self.resumePauseButton.text()
+        self.worker.serialDevice.write(b"%s\n" % command.encode())
+        if command == "pause":
+            self.resumePauseButton.setText("resume")
         else:
             self.resumePauseButton.setText("pause")
 

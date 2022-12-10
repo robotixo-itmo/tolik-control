@@ -34,6 +34,8 @@ class WorkerThread(QThread):
             except SerialException:
                 self.messageReceived.emit('disconnect')
                 self.exit()
+            except TypeError:
+                break
 
     def exit(self):
         self.exiting = True
