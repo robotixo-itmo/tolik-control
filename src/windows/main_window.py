@@ -15,7 +15,6 @@ class MainWindow(QMainWindow):
         self.port = ""
         self.dialog = ""
         self.currentDisplay = "start"
-        self.worker = None
 
         self.count = 0
         self.done = 0
@@ -95,7 +94,7 @@ class MainWindow(QMainWindow):
             self.dialog.exec()
             return
 
-        self.worker = WorkerThread(self.comboBox.currentText()) if self.worker is None else self.worker
+        self.worker = WorkerThread(self.comboBox.currentText())
         self.worker.messageReceived.connect(self.__processBoardOutput)
 
         self.portListener.exit()
@@ -104,7 +103,7 @@ class MainWindow(QMainWindow):
             element.setVisible(not element.isVisible())
         self.progressBar.setValue(round(self.done / self.count * 100))
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
-        self.worker.exit()
+        self.worker.exiting = True
         self.worker.serialDevice.write(b'repeat %d\n' % self.count)
         self.worker.exiting = False
         self.currentDisplay = "work"
@@ -128,7 +127,7 @@ class MainWindow(QMainWindow):
             self.__backToMainWindow()
 
     def __pauseResume(self):
-        self.worker.serialDevice.write(bytes(self.resumePauseButton.text(), 'ascii'))
+        #  self.worker.serialDevice.write(bytes(self.resumePauseButton.text(), 'ascii'))
         if self.resumePauseButton.text() == "pause":
             self.resumePauseButton.setText("resume")  # TODO: add action (send message to board, ..., ...)
         else:
