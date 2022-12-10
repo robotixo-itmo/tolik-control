@@ -13,12 +13,12 @@ class MainWindow(QMainWindow):
         uic.loadUi('windows/ui/main.ui', self)
 
         self.port = ""
-        self.dialog = ''
+        self.dialog = ""
         self.currentDisplay = "start"
+        self.worker = None
 
         self.count = 0
         self.done = 0
-        self.currentDisplay = "start"
 
         self.elementsGroup = [
             self.plusButton, self.minusButton, self.plusFiveButton, self.minusFiveButton, self.startButton,
@@ -95,7 +95,7 @@ class MainWindow(QMainWindow):
             self.dialog.exec()
             return
 
-        self.worker = WorkerThread(self.comboBox.currentText())
+        self.worker = WorkerThread(self.comboBox.currentText()) if self.worker is None else self.worker
         self.worker.messageReceived.connect(self.__processBoardOutput)
 
         self.portListener.exit()
@@ -104,14 +104,17 @@ class MainWindow(QMainWindow):
             element.setVisible(not element.isVisible())
         self.progressBar.setValue(round(self.done / self.count * 100))
         self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
+        self.worker.exit()
+        self.worker.serialDevice.write(b'repeat %d\n' % self.count)
+        self.worker.exiting = False
         self.currentDisplay = "work"
 
     def __processBoardOutput(self, text: str):
-        if text == 'done' and self.currentDisplay == "work":
+        if text == 'done\n' and self.currentDisplay == "work":
             self.__displayValueChange(0)
             self.doneLabel.setText(f'Выполнено циклов: {self.done}/{self.count}')
             self.progressBar.setValue(0 if self.done == 0 else round(self.done / self.count * 100))
-            if self.count <= self.done:
+            if self.count == self.done:
                 self.dialog = self.__dialog('Конец', 'Работа завершена')
                 self.currentDisplay = "start"
                 self.dialog.exec()
