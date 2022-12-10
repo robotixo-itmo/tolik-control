@@ -13,9 +13,10 @@ class WorkerThread(QThread):
         QThread.__init__(self, parent)
         if self.check_port():
             if platform.system() == 'Windows':
-                self.serialDevice = Serial(f"{self.port}")
+                self.serialDevice = Serial(f"{self.port}", 9600)
             elif platform.system() == 'Linux' or 'macOS':
-                self.serialDevice = Serial(f"/dev/{self.port}")
+                self.serialDevice = Serial(f"/dev/{self.port}", 9600)
+            sleep(6)
             self.exiting = False
             self.start()
 
@@ -34,7 +35,7 @@ class WorkerThread(QThread):
         while not self.exiting:
             try:
                 line = self.serialDevice.readline()
-                self.messageReceived.emit(str(line))
+                self.messageReceived.emit(line.decode())
                 sleep(0.5)
             except SerialException:
                 self.messageReceived.emit('disconnect')
